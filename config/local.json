@@ -1,0 +1,9 @@
+{
+  "env": "local",
+  "host": "localhost",
+  "port": "3200",
+  "mongo": "mongodb://localhost/service",
+  "secret_key": "service1187SEC",
+  "token_expired_days": "90d",
+  "loggerLevel": "trace"
+}
