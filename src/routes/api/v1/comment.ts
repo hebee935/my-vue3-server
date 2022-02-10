@@ -4,41 +4,42 @@ import { Router, Response, NextFunction } from 'express';
 
 import { generate } from '../../../lib/packet';
 import { verifyToken } from '../../../lib/middleware';
-import * as Card from '../../../controller/card';
+import * as Comment from '../../../controller/comment';
 
 const router = Router();
 
 router.route('/')
-  .get(getCardList)
-  .post(verifyToken, createCard);
-router.route('/:cardid')
-  .get(getCardOne)
-  .put(updateCard)
-  .delete(removeCard);
+  .get(getCommentList)
+  .post(verifyToken, createComment);
+router.route('/:commentid')
+  .get(getCommentOne)
+  .put(updateComment)
+  .delete(removeComment);
+
 
 /**
  * @swagger
- * /card:
+ * /card/{cardid}/comment:
  *   get:
  *     tags:
- *       - Card
- *     description: Get list of cards
+ *       - Comment
+ *     description: Get list of comments
  *     produces:
  *       - application:json
  *     responses:
  *       200:
- *         description: A list of cards.
+ *         description: A list of comments.
  *         schema:
  *           $ref: '#/definitions/ListResponse'
  *       401:
  *         description: Unauthorized (invalid token)
  */
 
-async function getCardList(req: any, res: Response, next: NextFunction) {
+ async function getCommentList(req: any, res: Response, next: NextFunction) {
   try {
-    const opt: any = {};
-    const cards = await Card.getCardList(opt, { updatedAt: -1 });
-    res.json(generate(cards));
+    const opt: any = { card: req.query.cardid };
+    const comments = await Comment.getCommentList(opt);
+    res.json(generate(comments));
   } catch (err) {
     next(err);
   }
@@ -46,87 +47,87 @@ async function getCardList(req: any, res: Response, next: NextFunction) {
 
 /**
  * @swagger
- * /card:
+ * /card/{cardid}/comment:
  *   post:
  *     tags:
- *       - Card
- *     description: Create a card
+ *       - Comment
+ *     description: Create a comment
  *     produces:
  *       - application:json
  *     parameters:
  *       - name: body
- *         description: card to create
+ *         description: comment to create
  *         in: body
  *         required: true
  *         schema:
  *           type: object
  *           properties:
- *             title:
+ *             message:
  *               type: string
- *               example: test card
- *             contents:
+ *               example: test comment
+ *             card:
  *               type: string
- *               example: test card contents
- *             image:
+ *               example: card objectid
+ *             parent:
  *               type: string
+ *               example: comment objectid
  *     responses:
  *       200:
- *         description: Success to create card
+ *         description: Success to create comment
  *         schema:
  *           type: object
  *           properties:
  *             success:
  *               type: boolean
  *             data:
- *               $ref: '#/components/schemas/Card'
+ *               $ref: '#/components/schemas/Comment'
  *       401:
  *         description: Unauthorized (invalid token)
  */
 
-async function createCard(req: any, res: Response, next: NextFunction) {
+async function createComment(req: any, res: Response, next: NextFunction) {
   try {
     req.body.user = req.decoded.id;
-    const card = await Card.createCard(req.body);
-    res.json(generate(card));
+    const comment = await Comment.createComment(req.body);
+    res.json(generate(comment));
   } catch (err) {
     next(err);
   }
 }
 
-
 /**
  * @swagger
- * /card/{cardid}:
+ * /comment/{commentid}:
  *   get:
  *     tags:
- *       - Card
- *     description: Get a card
+ *       - Comment
+ *     description: Get a comment
  *     produces:
  *       - application:json
  *     parameters:
- *       - name: cardid
- *         description: card id to get
+ *       - name: commentid
+ *         description: comment id to get
  *         in: path
  *         required: true
  *         type: string
  *     responses:
  *       200:
- *         description: Success to get a card.
+ *         description: Success to get a comment.
  *         schema:
  *           type: object
  *           properties:
  *             success:
  *               type: boolean
  *             data:
- *               $ref: '#/components/schemas/Card'
+ *               $ref: '#/components/schemas/Comment'
  *       401:
  *         description: Unauthorized (invalid token)
  */
 
-async function getCardOne(req: any, res: Response, next: NextFunction) {
+async function getCommentOne(req: any, res: Response, next: NextFunction) {
   try {
-    const card = await Card.getCardById(req.params.cardid);
-    res.json(generate(card));
+    const comment = await Comment.getCommentById(req.params.commentid);
+    res.json(generate(comment));
   } catch (err) {
     next(err);
   }
@@ -134,49 +135,47 @@ async function getCardOne(req: any, res: Response, next: NextFunction) {
 
 /**
  * @swagger
- * /card/{cardid}:
+ * /comment/{commentid}:
  *   put:
  *     tags:
- *       - Card
- *     description: Update a card
+ *       - Comment
+ *     description: Update a comment
  *     produces:
  *       - application:json
  *     parameters:
- *       - name: cardid
- *         description: card id to update
+ *       - name: commentid
+ *         description: comment id to update
  *         in: path
  *         required: true
  *         type: string
  *       - name: body
- *         description: data to update card
+ *         description: data to update comment
  *         in: body
  *         required: true
  *         schema:
  *           type: object
  *           properties:
- *             title:
+ *             message:
  *               type: string
- *               example: Update Card
- *             image:
- *               type: string
+ *               example: test comment
  *     responses:
  *       200:
- *         description: Success to updated card.
+ *         description: Success to updated comment.
  *         schema:
  *           type: object
  *           properties:
  *             success:
  *               type: boolean
  *             data:
- *               $ref: '#/components/schemas/Card'
+ *               $ref: '#/components/schemas/Comment'
  *       401:
  *         description: Unauthorized (invalid token)
  */
 
-async function updateCard(req: any, res: Response, next: NextFunction) {
+async function updateComment(req: any, res: Response, next: NextFunction) {
   try {
-    const card = await Card.updateCard(req.params.cardid, req.body);
-    res.json(generate(card));
+    const comment = await Comment.updateComment(req.params.commentid, req.body);
+    res.json(generate(comment));
   } catch (err) {
     next(err);
   }
@@ -185,36 +184,36 @@ async function updateCard(req: any, res: Response, next: NextFunction) {
 
 /**
  * @swagger
- * /card/{cardid}:
+ * /comment/{commentid}:
  *   delete:
  *     tags:
- *       - Card
- *     description: Remove a card
+ *       - Comment
+ *     description: Remove a comment
  *     produces:
  *       - application:json
  *     parameters:
- *       - name: cardid
- *         description: card id to remove
+ *       - name: commentid
+ *         description: comment id to remove
  *         in: path
  *         required: true
  *         type: string
  *     responses:
  *       200:
- *         description: Success to remove a card
+ *         description: Success to remove a comment
  *         schema:
  *           type: object
  *           properties:
  *             success:
  *               type: boolean
  *             data:
- *               $ref: '#/components/schemas/Card'
+ *               $ref: '#/components/schemas/Comment'
  *       401:
  *         description: Unauthorized (invalid token)
  */
-async function removeCard(req: any, res: Response, next: NextFunction) {
+async function removeComment(req: any, res: Response, next: NextFunction) {
   try {
-    const card = await Card.removeCard(req.params.cardid);
-    res.json(generate(card));
+    const comment = await Comment.removeComment(req.params.commentid);
+    res.json(generate(comment));
   } catch (err) {
     next(err);
   }

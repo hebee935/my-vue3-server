@@ -7,7 +7,6 @@ import { User, IUser } from '../db/models/user';
 import ServiceError from '../lib/ServiceError';
 import { errcode } from '../lib/packet';
 import config from '../../config';
-import { call } from '../lib/utils';
 
 export const getUserList = async (opt?: any) => {
   const users = await User.getUsers(opt);
@@ -16,6 +15,9 @@ export const getUserList = async (opt?: any) => {
 
 export const getUserById = async (id: ObjectId) => {
   const user = await User.getUserById(id);
+  if (!user) {
+    throw new ServiceError(errcode.user.notfound);
+  }
   return user;
 };
 

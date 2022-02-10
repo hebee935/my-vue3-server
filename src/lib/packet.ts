@@ -22,6 +22,9 @@ export const errcode = {
   todo: {
     notfound: { code: 3001, msg: 'not found todo error' },
   },
+  comment: {
+    notfound: { code: 4001, msg: 'not found comment error' },
+  },
 };
 
 export const generate = (data: any) => {

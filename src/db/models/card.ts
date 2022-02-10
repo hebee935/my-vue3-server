@@ -16,21 +16,17 @@ import { Schema, model, Document, Model, ObjectId } from 'mongoose';
  *           type: string
  *         image:
  *           type: string
- *         active:
- *           type: boolean
- *           default: true
  */
 
 export interface ICard extends Document {
-  user: ObjectId;
+  user: ObjectId | Object;
   title: string;
   contents: string;
   image: string;
-  active: boolean;
 }
 
 interface CardModel extends Model<ICard> {
-  getCards(opt?: any): [ICard];
+  getCards(opt?: any, sortOpt?: any): [ICard];
   getCardById(id: ObjectId): ICard;
   getCardOne(opt: any): ICard;
   createCard(input: any): ICard;
@@ -44,14 +40,13 @@ export const CardSchema = new Schema<ICard, CardModel>(
     contents: { type: String, required: true },
     user: { type: Schema.Types.ObjectId, ref: 'User' },
     image: { type: String },
-    active: { type: Boolean, default: true },
   },
   { timestamps: true },
 );
 
 CardSchema.statics = {
-  getCards: async function (opt = {}) {
-    return this.find(opt);
+  getCards: async function (opt = {}, sortOpt = {}) {
+    return this.find(opt).sort(sortOpt);
   },
   getCardById: function (id) {
     return this.findById(id);
@@ -66,11 +61,7 @@ CardSchema.statics = {
     return this.findByIdAndUpdate(id, { $set: input }, { new: true });
   },
   removeCard: async function (id) {
-    const card = await this.findById(id);
-    if (card) {
-      card.active = false;
-      await card.save();
-    }
+    const card = await this.findByIdAndDelete(id);
     return card;
   },
 };
