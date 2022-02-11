@@ -9,13 +9,20 @@ import { Schema, model, Document, Model, ObjectId } from 'mongoose';
  *     Todo:
  *       type: object
  *       properties:
- *         text:
+ *         title:
  *           type: string
  *           required: true
+ *         user:
+ *           type: string
+ *           required: true
+ *         status:
+ *           type: string
  */
 
 export interface ITodo extends Document {
-  text: string;
+  title: string;
+  status: string;
+  user: ObjectId | Object;
 }
 
 interface TodoModel extends Model<ITodo> {
@@ -29,7 +36,9 @@ interface TodoModel extends Model<ITodo> {
 
 export const TodoSchema = new Schema<ITodo, TodoModel>(
   {
-    text: { type: String, required: true },
+    title: { type: String, required: true },
+    status: { type: String, enum: ['READY', 'PROGRESS', 'DONE'], default: 'READY', },
+    user: { type: Schema.Types.ObjectId, ref: 'User' },
   },
   { timestamps: true },
 );

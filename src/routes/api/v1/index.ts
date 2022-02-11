@@ -21,13 +21,13 @@ const router = Router();
 router.use('/docs', swaggerRoute);
 
 router.use('/', signRoute);
-router.use('/card', cardRoute);
-router.use('/comment', commentRoute);
-router.use('/user', userRoute);
 
 router.use('/verify', verifyRoute);
 router.use(verifyToken);
 
+router.use('/card', cardRoute);
+router.use('/comment', commentRoute);
+router.use('/user', userRoute);
 router.use('/todo', todoRoute);
 
 router.use((_req, res, _next) => {

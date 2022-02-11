@@ -35,7 +35,7 @@ router.route('/:todoid')
 
 async function getTodoList(req: any, res: Response, next: NextFunction) {
   try {
-    const opt: any = {};
+    const opt: any = { user: req.decoded.id };
     if (req.query.category) opt.category = req.query.category;
 
     const todos = await Todo.getTodoList(opt);
@@ -62,7 +62,7 @@ async function getTodoList(req: any, res: Response, next: NextFunction) {
  *         schema:
  *           type: object
  *           properties:
- *             text:
+ *             title:
  *               type: string
  *               example: test todo
  *     responses:
@@ -81,6 +81,7 @@ async function getTodoList(req: any, res: Response, next: NextFunction) {
 
 async function createTodo(req: any, res: Response, next: NextFunction) {
   try {
+    req.body.user = req.decoded.id;
     const todo = await Todo.createTodo(req.body);
     res.json(generate(todo));
   } catch (err) {
@@ -149,9 +150,12 @@ async function getTodoOne(req: any, res: Response, next: NextFunction) {
  *         schema:
  *           type: object
  *           properties:
- *             text:
+ *             title:
  *               type: string
  *               example: Update Todo
+ *             status:
+ *               type: string
+ *               example: PROGRESS
  *     responses:
  *       200:
  *         description: Success to updated todo.

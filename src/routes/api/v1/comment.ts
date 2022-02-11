@@ -3,14 +3,13 @@
 import { Router, Response, NextFunction } from 'express';
 
 import { generate } from '../../../lib/packet';
-import { verifyToken } from '../../../lib/middleware';
 import * as Comment from '../../../controller/comment';
 
 const router = Router();
 
 router.route('/')
   .get(getCommentList)
-  .post(verifyToken, createComment);
+  .post(createComment);
 router.route('/:commentid')
   .get(getCommentOne)
   .put(updateComment)

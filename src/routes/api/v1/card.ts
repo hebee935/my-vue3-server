@@ -3,14 +3,13 @@
 import { Router, Response, NextFunction } from 'express';
 
 import { generate } from '../../../lib/packet';
-import { verifyToken } from '../../../lib/middleware';
 import * as Card from '../../../controller/card';
 
 const router = Router();
 
 router.route('/')
   .get(getCardList)
-  .post(verifyToken, createCard);
+  .post(createCard);
 router.route('/:cardid')
   .get(getCardOne)
   .put(updateCard)
