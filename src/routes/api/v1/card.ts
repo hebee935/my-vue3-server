@@ -4,16 +4,17 @@ import { Router, Response, NextFunction } from 'express';
 
 import { generate } from '../../../lib/packet';
 import * as Card from '../../../controller/card';
+import { verifyToken } from '../../../lib/middleware';
 
 const router = Router();
 
 router.route('/')
   .get(getCardList)
-  .post(createCard);
+  .post(verifyToken, createCard);
 router.route('/:cardid')
   .get(getCardOne)
-  .put(updateCard)
-  .delete(removeCard);
+  .put(verifyToken, updateCard)
+  .delete(verifyToken, removeCard);
 
 /**
  * @swagger
