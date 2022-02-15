@@ -25,6 +25,9 @@ export const errcode = {
   comment: {
     notfound: { code: 4001, msg: 'not found comment error' },
   },
+  file: {
+    notfound: { code: 5001, msg: 'not found file error' },
+  },
 };
 
 export const generate = (data: any) => {

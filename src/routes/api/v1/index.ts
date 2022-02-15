@@ -14,6 +14,7 @@ import verifyRoute from './verify';
 import cardRoute from './card';
 import todoRoute from './todo';
 import commentRoute from './comment';
+import fileRoute from './file';
 import swaggerRoute from './swagger';
 
 const router = Router();
@@ -21,12 +22,13 @@ const router = Router();
 router.use('/docs', swaggerRoute);
 
 router.use('/', signRoute);
+router.use('/card', cardRoute);
+router.use('/comment', commentRoute);
+router.use('/file', fileRoute);
 
 router.use('/verify', verifyRoute);
 router.use(verifyToken);
 
-router.use('/card', cardRoute);
-router.use('/comment', commentRoute);
 router.use('/user', userRoute);
 router.use('/todo', todoRoute);
 

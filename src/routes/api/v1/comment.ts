@@ -4,16 +4,17 @@ import { Router, Response, NextFunction } from 'express';
 
 import { generate } from '../../../lib/packet';
 import * as Comment from '../../../controller/comment';
+import { verifyToken } from '../../../lib/middleware';
 
 const router = Router();
 
 router.route('/')
   .get(getCommentList)
-  .post(createComment);
+  .post(verifyToken, createComment);
 router.route('/:commentid')
   .get(getCommentOne)
-  .put(updateComment)
-  .delete(removeComment);
+  .put(verifyToken, updateComment)
+  .delete(verifyToken, removeComment);
 
 
 /**

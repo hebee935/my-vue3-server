@@ -9,6 +9,7 @@ export interface IUser extends Document {
   active: boolean;
   _hashed_password: string;
   _role: string;
+  avatar?: string;
 }
 
 interface UserModel extends Model<IUser> {
@@ -25,6 +26,7 @@ export const UserSchema = new Schema<IUser>(
   {
     nickname: { type: String, required: true },
     uid: { type: String, required: true, unique: true },
+    avatar: { type: Schema.Types.ObjectId, ref: 'File' },
     active: { type: Boolean, default: true },
 
     _hashed_password: { type: String, },

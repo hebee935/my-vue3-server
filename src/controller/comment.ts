@@ -7,13 +7,13 @@ import { ObjectId } from 'mongoose';
 
 export const getCommentList = async (opt?: any, sortOpt?: any) => {
   const comments = await Comment.getComments(opt, sortOpt);
-  await Comment.populate(comments, { path: 'user', select:  { nickname: 1 }});
+  await Comment.populate(comments, { path: 'user' });
   return comments;
 };
 
 export const getCommentById = async (id: ObjectId, throwError = true) => {
   const comment = await Comment.getCommentById(id);
-  await Comment.populate(comment, { path: 'user', select:  { nickname: 1 }});
+  await Comment.populate(comment, { path: 'user' });
   if (!comment && throwError) {
     throw new ServiceError(errcode.comment.notfound);
   }
@@ -22,14 +22,14 @@ export const getCommentById = async (id: ObjectId, throwError = true) => {
 
 export const createComment = async (input: any) => {
   const comment = await Comment.createComment(input);
-  await Comment.populate(comment, { path: 'user', select:  { nickname: 1 }});
+  await Comment.populate(comment, { path: 'user' });
   return comment;
 };
 
 export const updateComment = async (id: ObjectId, input: any, throwError = true) => {
   delete input?.active;
   const comment = await Comment.updateComment(id, input);
-  await Comment.populate(comment, { path: 'user', select:  { nickname: 1 }});
+  await Comment.populate(comment, { path: 'user' });
   if (!comment && throwError) {
     throw new ServiceError(errcode.comment.notfound);
   }
