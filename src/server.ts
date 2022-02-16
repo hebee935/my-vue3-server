@@ -9,7 +9,10 @@ import routing from './routing';
 
 const app: express.Application = express();
 
-app.use(cors());
+app.use(cors({
+  origin: '*',
+  optionsSuccessStatus: 200
+}));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static('public'));

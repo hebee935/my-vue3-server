@@ -7,7 +7,7 @@ import ServiceError from '../../../lib/ServiceError';
 import { errcode, generate, } from '../../../lib/packet';
 import { readFileStream } from '../../../lib/utils';
 
-import { uploadObjects, changeObject, getFileById, } from '../../../controller/file';
+import { uploadObjects, changeObject, getFileById, removeFile, } from '../../../controller/file';
 
 const router = Router();
 const upload = multer({ storage: multer.memoryStorage() });
@@ -16,6 +16,7 @@ router.post('/', upload.any(), createAndUploadFile);
 router.put('/:fileid', upload.single('file'), updateAndUploadFile);
 router.get('/:fileid', getFileOne);
 router.get('/:fileid/object', getFileObject);
+router.delete('/:fileid', removeFileOne);
 
 
 async function createAndUploadFile(req: any, res: Response, next: NextFunction) {
@@ -67,6 +68,15 @@ async function updateAndUploadFile(req: any, res: Response, next: NextFunction) 
     }
     const changedFile = await changeObject(fileid, file);
     res.json(generate(changedFile));
+  } catch (err) {
+    next(err);
+  }
+}
+
+async function removeFileOne(req: any, res: Response, next: NextFunction) {
+  try {
+    const file = await removeFile(req.params.fileid);
+    res.json(generate(file));
   } catch (err) {
     next(err);
   }

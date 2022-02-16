@@ -1,6 +1,7 @@
 'use strict';
 
 import { Schema, model, Document, Model, ObjectId, } from 'mongoose';
+import config from '../../../config';
 
 export interface IFile extends Document {
   name: string;
@@ -51,15 +52,14 @@ FileSchema.statics = {
     return this.findByIdAndUpdate(id, { $set: input }, { new: true });
   },
   removeFile: async function (id) {
-    const file = await this.findById(id);
-    file.active = false;
-    return await file.save();
+    const file = await this.findByIdAndDelete(id);
+    return file;
   },
 };
 
 FileSchema.set('toJSON', {
 	transform: (_doc, ret) => {
-    ret.path = `${process.env.PWD}/data/${ret._path}`;
+    ret.path = `${config.apiV1}/file/${ret._id}/object`;
 		delete ret._path;
 		return ret;
 	}

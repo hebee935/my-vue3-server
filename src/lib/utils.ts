@@ -21,3 +21,9 @@ export const readFileStream = (path: string) => {
   const filePath = `${rootPath}/data/${path}`;
   return fs.createReadStream(filePath);
 };
+
+export const deleteFile = async (path: string) => {
+  const rootPath = process.env.PWD;
+  const filePath = `${rootPath}/data/${path}`;
+  return fs.rmSync(filePath);
+};

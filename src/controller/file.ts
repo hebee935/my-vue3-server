@@ -3,7 +3,7 @@
 import { File, } from '../db/models/file';
 import ServiceError from '../lib/ServiceError';
 import { errcode } from '../lib/packet';
-import { writeFile, } from '../lib/utils';
+import { writeFile, deleteFile, } from '../lib/utils';
 import { ObjectId } from 'mongoose';
 
 export const getFileList = async (opt?: any) => {
@@ -38,6 +38,7 @@ export const removeFile = async (id: ObjectId, throwError = true) => {
   if (!file && throwError) {
     throw new ServiceError(errcode.file.notfound);
   }
+  await deleteFile(file._path);
   return file;
 };
 
