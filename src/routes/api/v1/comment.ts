@@ -19,7 +19,7 @@ router.route('/:commentid')
 
 /**
  * @swagger
- * /card/{cardid}/comment:
+ * /comment:
  *   get:
  *     tags:
  *       - Comment
@@ -47,7 +47,7 @@ router.route('/:commentid')
 
 /**
  * @swagger
- * /card/{cardid}/comment:
+ * /comment/{commentid}:
  *   post:
  *     tags:
  *       - Comment

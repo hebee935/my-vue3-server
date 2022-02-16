@@ -15,6 +15,7 @@ import cardRoute from './card';
 import todoRoute from './todo';
 import commentRoute from './comment';
 import fileRoute from './file';
+import tagRoute from './tag';
 import swaggerRoute from './swagger';
 
 const router = Router();
@@ -25,6 +26,7 @@ router.use('/', signRoute);
 router.use('/card', cardRoute);
 router.use('/comment', commentRoute);
 router.use('/file', fileRoute);
+router.use('/tag', tagRoute);
 
 router.use('/verify', verifyRoute);
 router.use(verifyToken);

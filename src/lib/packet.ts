@@ -28,6 +28,9 @@ export const errcode = {
   file: {
     notfound: { code: 5001, msg: 'not found file error' },
   },
+  tag: {
+    notfound: { code: 5001, msg: 'not found tag error' },
+  },
 };
 
 export const generate = (data: any) => {
